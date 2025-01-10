@@ -11,7 +11,7 @@ def calculate_distance(p1, p2):
     """
     return math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
 
-def detect_qr_code(image_number):
+def detect_qr_code(image_number, qr_number):
     """
     Detect QR code in an image and calculate the average length of the two shortest lines
     from the detected triangle points.
@@ -19,7 +19,7 @@ def detect_qr_code(image_number):
     :return: Average length of the two shortest lines if QR code detected; otherwise None.
     """
     # Load the image
-    image = cv2.imread(f"data/experiment/{image_number}.jpg")
+    image = cv2.imread(f'data/daheng/{image_number}_QR_{qr_number}.png')
 
     # Initialize QR Code Detector
     qr_detector = cv2.QRCodeDetector()
@@ -29,7 +29,6 @@ def detect_qr_code(image_number):
     if points is not None:
         # `points` is an array of four corner points of the QR code
         points = points[0]
-        print(f"QR Code {image_number} away")
 
         # Define the triangle points (top-left, top-right, bottom-left)
         triangle_points = [
@@ -58,14 +57,11 @@ def detect_qr_code(image_number):
             end_point = triangle_points[j]
             cv2.line(image, start_point, end_point, (0, 255, 0), 1)
 
-        # Display the image with the lines
-        # cv2.imshow("QR Code Detection", image)
-        # cv2.waitKey(10000)
-        # cv2.destroyAllWindows()
 
         plt.figure()
         plt.title(f"QR code {image_number} cm displaced")
         plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+        #plt.show()
         plt.axis('off')
 
         return average_length
@@ -74,19 +70,15 @@ def detect_qr_code(image_number):
         return None
 
 # Test with images and calculate X2
-image_numbers = [0, 0.25, 0.5, 1, 2, 4, 8, 81, 82]
-X1 = 75  # Given value for the first image in cm
-u1 = detect_qr_code(image_numbers[0])
+X1 = 750  # Given value for the first image in mm
+print("without sift")
+for i in range (3):
+    print(f"QR {i}")
+    u1 = detect_qr_code(0, i)
+    for j in range (1, 7):
+        u2 = detect_qr_code(j, i)
+        X2 = X1 * (u1 / u2)
+        print(f"For image {j}: displacement = {X1 - X2:.1f} mm")
 
-print(f"For image {image_numbers[0]}: X1 = {X1:.2f} cm")
-if u1:
-    for i in range(1, len(image_numbers)):
-        u2 = detect_qr_code(image_numbers[i])
-        if u2:
-            X2 = X1 * (u1 / u2)
-            print(f"For image {image_numbers[i]}: X2 = {X2:.2f} cm")
-        else:
-            print(f"Skipping calculation for {image_numbers[i]} due to missing QR code.")
-
-plt.show()
+#plt.show()
 
