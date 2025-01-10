@@ -56,11 +56,21 @@ for qr_number in range(3):
 plt.figure(figsize=(10, 6))
 x_axis = [2.5, 5, 10, 20, 40, 80]
 for qr_number, displacements in displacement_data.items():
+    if qr_number == 1:
+        displacements = [a - b for a, b in zip(displacements, x_axis)]
     plt.plot(x_axis, displacements, marker='o', label=f"QR {qr_number}")
 
-plt.title("Displacement vs. Image Number")
+# Set graduated x-axis ticks
+plt.xticks(x_axis)  # Ensures ticks are at the data points
+plt.ylim(-10, 10)  # Limits y-axis to range between -10 and 10
+
+plt.title("Experiment: displace only QR1, u: SIFT")
 plt.xlabel("QR1 real displacement [mm]")
-plt.ylabel("Measured displacement")
+plt.ylabel("Error in measured displacement [mm]")
 plt.legend()
 plt.grid(True)
+
+
+
+
 plt.show()
