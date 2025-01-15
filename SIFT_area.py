@@ -30,9 +30,9 @@ def qr_area(image_number, qr_number):
     # Compute the homography matrix
     H, _ = cv2.findHomography(points1, points2, cv2.RANSAC)
 
-    # Extract scale from the homography matrix
-    scale_x = np.sqrt(H[0, 0]**2 + H[0, 1]**2)
-    scale_y = np.sqrt(H[1, 0]**2 + H[1, 1]**2)
+    # Extract scale from the homography matrix TODO: take shearing into consideration, should in be the rows or the vectors?
+    scale_x = np.sqrt(H[0, 0]**2 + H[1, 0]**2)
+    scale_y = np.sqrt(H[0, 1]**2 + H[1, 1]**2)
     scale = (scale_x + scale_y) / 2  # Average scale factor
 
     # Compute displacement
