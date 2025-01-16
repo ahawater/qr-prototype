@@ -7,22 +7,22 @@ f = 4.0
 d = 300
 alpha = 25 * pi / 180
 qr_size = 18
-pixel_size = 3.45 * 10**-3  # 2.2 microns
+pixel_size = 1.85 * 10**-3 
 b = 140 
 
 # Functions
-def term(a, d):
+def g(a, d):
     numerator = a / d - tan(alpha)
     denominator = 1 + tan(alpha) * a / d
     return numerator / denominator
 
 def equation_qr_side_length_measurment(a, d_res):
     a = abs(a)
-    return f * (term(a + qr_size, d - d_res) - term(a, d - d_res) - term(a + qr_size, d) + term(a, d)) - pixel_size
+    return f * (g(a + qr_size, d - d_res) - g(a, d - d_res) - g(a + qr_size, d) + g(a, d)) - pixel_size
 
 def equation_qr_center_location_measurment(a, d_res):
     a = abs(a)
-    return f * (term(a, d - d_res) - term(a, d)) - pixel_size
+    return f * (g(a, d - d_res) - g(a, d)) - pixel_size
 
 # Grid setup
 x = np.linspace(-b, 600 - b, 1000)  # Range for x
