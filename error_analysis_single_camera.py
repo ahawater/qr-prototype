@@ -17,12 +17,15 @@ def g(a, d):
     return numerator / denominator
 
 def equation_qr_side_length_measurment(a, d_res):
-    a = abs(a)
     return f * (g(a + qr_size, d - d_res) - g(a, d - d_res) - g(a + qr_size, d) + g(a, d)) - pixel_size
 
 def equation_qr_center_location_measurment(a, d_res):
-    a = abs(a)
-    return f * (g(a, d - d_res) - g(a, d)) - pixel_size
+    result = np.where(
+        a < 0,
+        f * (g(a, d - d_res) - g(a, d)) + pixel_size,
+        f * (g(a, d - d_res) - g(a, d)) - pixel_size
+    )
+    return result
 
 # Grid setup
 x = np.linspace(-b, 600 - b, 1000)  # Range for x
@@ -57,6 +60,5 @@ legend_handles = [
     plt.Line2D([], [], color='red', label='feature location measurment, equation 7')
 ]
 plt.legend(handles=legend_handles)
-
 
 plt.show()
