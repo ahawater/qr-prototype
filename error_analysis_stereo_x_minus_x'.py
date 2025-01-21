@@ -7,8 +7,8 @@ b = 140
 f = 4.0
 pixel_size = 1.85 * 10 **-3 
 k = 1 / pixel_size
-x_minus_x_prime_range = np.arange(700, 4024)  # Avoid division by zero
-alpha = 60 * pi / 180
+x_minus_x_prime_range = np.arange(400, 4024)  # Avoid division by zero
+alpha = 25 * pi / 180
 a = 100  # Fix a = 100
 d = 350
 
@@ -51,7 +51,8 @@ def compute_z(x_minus_x_prime_range):
 def compute_d_est(x_minus_x_prime_range):
     z_values = compute_z(x_minus_x_prime_range)
     y_values = compute_y(a, x_minus_x_prime_range, d)
-    d_est = cos(alpha) * np.sqrt(z_values**2 + y_values**2)
+    angle = alpha + np.arctan(y_values / z_values)
+    d_est = np.cos(angle) * np.sqrt(z_values**2 + y_values**2)
     return d_est
 
 # Compute differences for all d in the range
@@ -59,7 +60,7 @@ d_est = compute_d_est(x_minus_x_prime_range)
 
 # Plot the differences as a scatter plot with lines
 plt.plot(x_minus_x_prime_range, d_est, color='blue', linewidth=1)  # Line connection
-#plt.scatter(x_minus_x_prime_range, d_est, s=5, color='blue')  # Larger dots
+plt.scatter(x_minus_x_prime_range, d_est, s=5, color='blue')  # Larger dots
 plt.xlabel('x - x\' [mm]')
 plt.ylabel('d_est [mm]')
 plt.legend()

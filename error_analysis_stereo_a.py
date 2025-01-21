@@ -52,7 +52,8 @@ def compute_z(x_minus_x_prime_range):
 def compute_resolution(a):
     z_values = compute_z(x_minus_x_prime_range)
     y_values = compute_y(a, x_minus_x_prime_range)
-    d_est = cos (alpha) * np.sqrt(z_values**2 + y_values**2)
+    angle = alpha + np.arctan(y_values / z_values)
+    d_est = np.cos(angle) * np.sqrt(z_values**2 + y_values**2)
 
     # Find the index where sqrt(Z^2 + Y^2) is closest to the target value
     closest_index = np.argmin(np.abs(d_est - d))
@@ -63,7 +64,7 @@ def compute_resolution(a):
 
     lower_value = d_est[closest_index]
     upper_value = d_est[closest_index + 1]
-    return abs(upper_value- lower_value)
+    return abs(d- lower_value)
 
 # Define a custom formatter
 def normal_format(x, _):
