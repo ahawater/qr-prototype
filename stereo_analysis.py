@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 from math import tan, pi, sqrt, cos
 
 # All units in mm
-b = 200
-f = 4.0
+b = 400
+f = 12.0
 pixel_size = 1.85 * 10 **-3 
 k = 1 / pixel_size
 alpha = 25 * pi / 180
@@ -40,18 +40,12 @@ def compute_d(y, dx, a):
 
 
 # Compute values for a_range
-y_values = np.array([round(y(a, d)) for a in a_range])  # Calculate y
-dx_values = np.array([round(compute_dx(a, y_val)) for a, y_val in zip(a_range, y_values)])  # Calculate and round dx
-d_values = np.array([compute_d(y_val, dx, a) for y_val, dx, a in zip(y_values, dx_values, a_range)])  # Calculate and round d
-d_values = d_values - d
+y_values = np.array([y(a, d) for a in a_range])  # Calculate y
+dx_values = np.array([compute_dx(a, y_val) for a, y_val in zip(a_range, y_values)])  # Calculate and round dx
+d_values = np.array([compute_d(round(y_val), round(dx), a) for y_val, dx, a in zip(y_values, dx_values, a_range)])  # Calculate and round d
+d_err = d_values - d
 
-# Calculate the error d - 350
-error_values = d_values - 350
-
-# Find the maximum absolute error
-max_error = np.max(np.abs(error_values))
-
-# Print the maximum error
+max_error = np.max(np.abs(d_err))
 print(f"Maximum absolute error: {max_error:.2f} mm")
 
 
@@ -60,30 +54,24 @@ plt.figure(figsize=(12, 8))
 
 # Plot y
 plt.subplot(3, 1, 1)
-plt.plot(a_range, y_values, label="y(a)")
-plt.xlabel("a (mm)")
-plt.ylabel("y (pixels)")
-plt.title("y(a) vs a")
+plt.plot(a_range, y_values)
+plt.xlabel("a [mm]")
+plt.ylabel("y [pixels]")
 plt.grid()
-plt.legend()
 
 # Plot dx
 plt.subplot(3, 1, 2)
-plt.plot(a_range, dx_values, label="dx(a)", color="orange")
-plt.xlabel("a (mm)")
-plt.ylabel("dx (pixels)")
-plt.title("dx(a) vs a")
+plt.plot(a_range, dx_values, color="orange")
+plt.xlabel("a [mm]")
+plt.ylabel("dx [pixels]")
 plt.grid()
-plt.legend()
 
 # Plot d
 plt.subplot(3, 1, 3)
-plt.plot(a_range, d_values, label="d(a)", color="green")
-plt.xlabel("a (mm)")
-plt.ylabel("d_err (mm)")
-plt.title("d_err(a) vs a")
+plt.plot(a_range, d_err, color="green")
+plt.xlabel("a [mm]")
+plt.ylabel("d_err [mm]")
 plt.grid()
-plt.legend()
 
 plt.tight_layout()
 plt.show()
