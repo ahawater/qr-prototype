@@ -64,7 +64,7 @@ def compute_resolution(a):
 
     lower_value = d_est[closest_index]
     upper_value = d_est[closest_index + 1]
-    return abs(d- lower_value)
+    return abs(upper_value- lower_value)
 
 # Define a custom formatter
 def normal_format(x, _):

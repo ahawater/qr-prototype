@@ -2,6 +2,7 @@ from scipy.optimize import fsolve
 import numpy as np
 import matplotlib.pyplot as plt
 from math import tan, pi, sqrt, cos
+import math
 
 # All units in mm
 b = 140 
@@ -10,7 +11,6 @@ pixel_size = 1.85 * 10 **-3
 k = 1 / pixel_size
 alpha = 25 * pi / 180
 d = 350
-a = 100
 
 def g(a, d):
     numerator = a / d - tan(alpha)
@@ -64,19 +64,44 @@ def variable_d(d):
     # Return the equation to be solved (should be zero when the solution is found)
     return y ** 2 + z ** 2 - d ** 2 - a ** 2
 
-# Initial guess for delta_x
-initial_guess = [700]
+# Define the range of a values
+a_values = np.linspace(-b, 600 - b, 500)
+d_d_est_differences = []
 
-# Solve the equation for delta_x
-solution = fsolve(variable_delta_x, initial_guess)
+for a in a_values:
+    # Initial guess for delta_x
+    initial_guess_delta_x = [700]
 
-delta_x = solution[0]
-delta_x = round(delta_x)
+    # Solve the equation for delta_x
+    solution = fsolve(variable_delta_x, initial_guess_delta_x, xtol=1e-6)
 
-initial_guess = [d]
-solution = fsolve(variable_d, initial_guess)
+    delta_x = solution[0]
+    delta_x = math.floor(delta_x)
 
-d_est = solution[0]
+    initial_guess_d = [300]
+    solution = fsolve(variable_d, initial_guess_d, xtol=1e-6)
 
-print(f"x - x' = {delta_x}")
-print(f"d - d_est' = {abs(d - d_est)}")
+    d_est_down = solution[0]
+
+    delta_x = delta_x + 1
+    solution = fsolve(variable_d, initial_guess_d, xtol=1e-6)
+    d_est_up = solution[0]
+
+
+    d_d_est_differences.append(abs(d_est_down - d_est_up))
+
+    print(f"x - x' = {delta_x}")
+    print(f"d - d_est' = {abs(d_est_down - d_est_up)}")
+
+# Plot the results
+plt.figure(figsize=(10, 6))
+plt.plot(a_values, d_d_est_differences, label="$|d - d_{est}|$")
+plt.axhline(0, color='gray', linestyle='--', linewidth=0.8)
+plt.title("Difference between $d$ and $d_{est}$ vs. $a$")
+plt.xlabel("$a$ (mm)")
+plt.ylabel("$|d - d_{est}|$ (mm)")
+plt.legend()
+plt.grid(True)
+plt.show()
+
+# problem is that a also changes
