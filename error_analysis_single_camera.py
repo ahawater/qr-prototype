@@ -3,11 +3,11 @@ import matplotlib.pyplot as plt
 from math import tan, pi
 
 # Constants
-f = 4.0
-d = 300
-alpha = 25 * pi / 180
+f = 6
+d = 160
+alpha =  47 * pi / 180
 qr_size = 18
-pixel_size = 1.85 * 10**-3 
+pixel_size = 2 * 10**-3 
 b = 140 
 
 # Functions

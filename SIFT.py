@@ -2,8 +2,8 @@ import cv2
 import matplotlib.pyplot as plt
 
 # Load the two images
-image1_path = "data/daheng/0_QR_1.png"  # Replace with the first image path
-image2_path = "data/daheng/6_QR_1.png"  # Replace with the second image path
+image1_path = "IMG_3615.jpg"  # Replace with your image path
+image2_path = "IMG_3616.jpg"
 image1 = cv2.imread(image1_path)
 image2 = cv2.imread(image2_path)
 gray1 = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)

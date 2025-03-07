@@ -3,12 +3,12 @@ import matplotlib.pyplot as plt
 from math import tan, pi, sqrt, cos
 
 # All units in mm
-b = 400
-f = 12.0
-pixel_size = 1.85 * 10 **-3 
+b = 70
+f = 8.0
+pixel_size = 2 * 10 **-3 
 k = 1 / pixel_size
-alpha = 25 * pi / 180
-d = 350
+alpha = 0 * pi / 180
+d = 300
 a_range = np.arange(-150, 451, 0.01)  # Range for a from -150 to 450
 
 def g(a, d):
