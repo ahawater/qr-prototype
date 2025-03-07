@@ -27,7 +27,7 @@ def detect_qr(image):
         # Draw a point at the center of the detected QR code
         cv2.circle(image, (int(x), int(y)), 10, (0, 255, 0), -1)  # Green dot
         cv2.imwrite(f"confidence {confidence}, detected_code {detected_code}.png", image)  #log either date, or have a txt file with the date and time of the image
-        #this repo stays private, just 
+        #this repo stays private, just upload the important scripts on notion
 
 
 image = cv2.imread("2 qr codes.jpg")
