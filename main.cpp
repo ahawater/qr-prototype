@@ -1,22 +1,11 @@
 #include <pybind11/embed.h>
 #include <pybind11/numpy.h>
 #include <opencv2/opencv.hpp>
+#include <chrono>
 
 namespace py = pybind11;
 
 void processImageWithPython(const cv::Mat& inputImage) {
-    py::scoped_interpreter guard{};  // Start Python interpreter
-
-    // Convert cv::Mat to numpy array
-    std::cout << "started python interpreter" << std::endl;
-
-    py::module_ np = py::module_::import("numpy");
-
-    std::cout << "imported numpy" << std::endl;
-
-    py::module_ cv2 = py::module_::import("cv2");
-
-    std::cout << "imported cv2" << std::endl;
 
     auto img = py::array_t<unsigned char>(
         {inputImage.rows, inputImage.cols, inputImage.channels()},
@@ -62,15 +51,33 @@ void processImageWithPython(const cv::Mat& inputImage) {
 
 int main() {
     std::cout << "OpenCV version: " << CV_VERSION << std::endl;
-    cv::Mat image = cv::imread("../data/v.12 lower camera crop.jpg");
+    cv::Mat image = cv::imread("../data/upper camera after.jpg");
     if (image.empty()) {
         std::cerr << "Error loading image" << std::endl;
         return -1;
     }
     std::cout << "Image size: " << image.size() << std::endl;
 
-    // Process image with Python function
-    processImageWithPython(image);
+    py::scoped_interpreter guard{};  // Start Python interpreter
 
+    // Convert cv::Mat to numpy array
+    std::cout << "started python interpreter" << std::endl;
+
+    py::module_ np = py::module_::import("numpy");
+
+    std::cout << "imported numpy" << std::endl;
+
+    py::module_ cv2 = py::module_::import("cv2");
+
+    std::cout << "imported cv2" << std::endl;
+
+
+    for (int i=0; i<5; ++i){
+    auto start = std::chrono::high_resolution_clock::now();
+    processImageWithPython(image);
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = end - start;
+    std::cout << "Time taken: " << duration.count() << " seconds." << std::endl;
+    }
     return 0;
 }

@@ -3,6 +3,7 @@ from qreader import QReader
 import time
 from datetime import datetime
 from math import sqrt
+import os
 
 # Initialize qreader detector
 qr_detector = QReader()
@@ -41,7 +42,8 @@ def detect_qr(image):
         u = sqrt((x1-x2)**2 + (y1-y2)**2)
         cv2.line(image, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 3)
         time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        cv2.imwrite(f"output/time {time}, confidence {confidence}, detected_code {detected_code}.png", image)  #log either date, or have a txt file with the date and time of the image
+
+        cv2.imwrite(f"../output/time {time}, confidence {confidence}, detected_code {detected_code}.png", image)  #log either date, or have a txt file with the date and time of the image
         return u, detected_code, error
 
 
