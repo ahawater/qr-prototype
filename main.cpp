@@ -39,6 +39,25 @@ void processImageWithPython(const cv::Mat& inputImage) {
     // Call the Python 'detect_qr' function
     py::object result = script.attr("detect_qr")(img);
 
+    // Check if the result is a tuple (since detect_qr returns multiple values)
+    if (py::isinstance<py::tuple>(result)) {
+        // Cast the result to a tuple
+        py::tuple result_tuple = result.cast<py::tuple>();
+
+        // Extract each element from the tuple
+        float u = result_tuple[0].cast<float>();         // Extract float
+        std::string detected_code = result_tuple[1].cast<std::string>();  // Extract string
+        bool error = result_tuple[2].cast<bool>();       // Extract bool
+
+        // Now, you can use these values in your C++ code
+        std::cout << "u: " << u << std::endl;
+        std::cout << "Detected QR Code: " << detected_code << std::endl;
+        std::cout << "Error: " << (error ? "True" : "False") << std::endl;
+
+    } else {
+        std::cerr << "Expected a tuple, but got a different type!" << std::endl;
+    }
+
 }
 
 int main() {
