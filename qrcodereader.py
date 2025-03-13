@@ -7,7 +7,8 @@ from math import sqrt
 # Initialize qreader detector
 qr_detector = QReader()
 
-def detect_qr(image, lower_camera):
+def detect_qr(image):
+    lower_camera = False
     # Detect QR code using qreader
     detections = qr_detector.detect_and_decode(image, return_detections=True)
     detected_codes = detections[0]
@@ -44,18 +45,18 @@ def detect_qr(image, lower_camera):
         return u, detected_code, error
 
 
-time_taken = []
+# time_taken = []
 
-for i in range (10):
-    image = cv2.imread("data/v.12 lower camera crop.jpg")
-    before = time.time()
-    lower_camera = False
-    u,detected_code, error = detect_qr(image, lower_camera)
-    after = time.time()
-    time_taken.append(after - before)
+# for i in range (10):
+#     image = cv2.imread("data/v.12 lower camera crop.jpg")
+#     before = time.time()
+#     lower_camera = False
+#     u,detected_code, error = detect_qr(image, lower_camera)
+#     after = time.time()
+#     time_taken.append(after - before)
 
-for i in range(len(time_taken)):
-    print(f"Time taken for iteration {i+1}: {time_taken[i]} seconds")
+# for i in range(len(time_taken)):
+#    print(f"Time taken for iteration {i+1}: {time_taken[i]} seconds")
 
 #return value of the function should be (x,y), that is it (for the lower camera)
 #for the upper camera, it should be u (average of both diagonal?)

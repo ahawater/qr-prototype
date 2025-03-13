@@ -1,6 +1,7 @@
 # Ignore the data directory
 data/
 output/
+build/
 
 # Ignore Python virtual environments
 my_env/
